@@ -84,8 +84,10 @@ function spotifyThisSong() {
 
 	var params = songName;
 userKeys.search({type: 'track', query: params}, function(error, data) { 
+	console.log(require('util').inspect(data, { depth: 2, colors: true }));
+	//console.log(data);
   if (!error) {
-    var songInfo = data.tracks.items[0];
+    var songInfo = data.tracks.href.items[0];
     for(var i = 0; i< songInfo.length; i++){
     	if (!songInfo != undefined){
     		var spotifyResults = 
