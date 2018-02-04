@@ -61,9 +61,9 @@ client.get('statuses/user_timeline', params, function(error, tweets, response) {
   		console.log(twitterResults);
   	}
 
-  	} else{
-  	console.log("An Error has occurred! " + error);		
-  	return;
+  	} else {
+  		console.log("An Error has occurred! " + error);		
+  		return;
   	}  	
   });
 console.log("My Tweets!!")
@@ -83,8 +83,8 @@ function spotifyThisSong() {
 	} 
 
 	var params = songName;
-spotify.search({type: 'track', query: params}, function(err, data) { 
-  if (!err) {
+userKeys.search({type: 'track', query: params}, function(error, data) { 
+  if (!error) {
     var songInfo = data.tracks.items[0];
     for(var i = 0; i< songInfo.length; i++){
     	if (!songInfo != undefined){
@@ -95,14 +95,12 @@ spotify.search({type: 'track', query: params}, function(err, data) {
     		"\nAlbum Song is from: " + songInfo[i].album.name + "\n" +
     		"\nPreview Url: " + songInfo[i].preview.url + "\n"
     		console.log(spotifyResults);
+   			}
+    	}
 
-
-   }
-    }
-
-   }else{
-  	console.log("An Error has occurred: " + err);
-  	return;
+   	} else {
+  		console.log("An Error has occurred: " + error);
+  		return;
   }
  
 });
