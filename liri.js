@@ -84,22 +84,17 @@ function spotifyThisSong() {
 
 	var params = songName;
 userKeys.search({type: 'track', query: params}, function(error, data) { 
-	console.log(require('util').inspect(data, { depth: 2, colors: true }));
 	//console.log(data);
   if (!error) {
-    var songInfo = data.tracks.href.items[0];
-    for(var i = 0; i< songInfo.length; i++){
-    	if (!songInfo != undefined){
+    var songInfo = data.tracks.items[0];
+    	//console.log(songInfo);
     		var spotifyResults = 
     		"\nUser Input: " + songName + "\n" +
-    		"\nSong: " + songInfo[i].name + "\n" +
-    		"\nArtist: " + songInfo[i].artist[0].name + "\n" +
-    		"\nAlbum Song is from: " + songInfo[i].album.name + "\n" +
-    		"\nPreview Url: " + songInfo[i].preview.url + "\n"
+    		"\nSong: " + songInfo.name + "\n" +
+    		"\nArtist: " + songInfo.artists[0].name + "\n" +
+    		"\nAlbum Song is from: " + songInfo.album.name + "\n" +
+    		"\nPreview Url: " + songInfo.preview_url + "\n"
     		console.log(spotifyResults);
-   			}
-    	}
-
    	} else {
   		console.log("An Error has occurred: " + error);
   		return;
@@ -149,8 +144,23 @@ console.log("Movie This!!");
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------
-
 //Do what it says
+
+
+function doCommand(command, arg) {
+    switch (liriArgument) {
+
+	case "do-what-it-says":
+	doWhatItSays();
+	break;
+
+	case "spotify-this-song":
+	spotifyThisSong();
+	break;
+    }
+}
+
+
 function doWhatItSays(){
 	fs.readFile("random.txt", "utf8", function(error, data) {
 
@@ -158,14 +168,21 @@ function doWhatItSays(){
   if (!error) {
     var doWhatItSaysResults = data.split(",");
     console.log("Reading File..... ");
-  	spotifyThisSong(doWhatItSaysResults[0] + doWhatItSaysResults[1]);
+
+  	doCommand(doWhatItSaysResults[0] + doWhatItSaysResults[1]);
+  	console.log(data);
   	
-  } else{
-  		return console.log(error);
+  } else{ 
+  		console.log("An Error has Occured! " + error);
+  		return;
   }
   //console.log(dataArr);
 
 });
 console.log("Do What It Says!!");
 }
+
+doCommand(liriArgument, process.argv[3])
+	//console.log(songInfo);
+
 
