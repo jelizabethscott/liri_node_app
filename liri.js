@@ -7,8 +7,67 @@ require("dotenv").config();
 	var twitter = require("twitter");
 	var spotify = require ("node-spotify-api");
 	var liriArgument = process.argv[2];
+
+//-------------------------------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 //Commands for Liri App
+
+function doCommand(command, arg) {
+    switch(command){
+
+	case "my-tweets":
+	myTweets(arg);
+	break;
+
+	case "spotify-this-song":
+	spotifyThisSong(arg);
+	break;
+
+	case "movie-this":
+	movieThis(arg);
+	break;
+
+	case "do-what-it-says":
+	doWhatItSays();
+	break;
+
+	default: console.log("\nType any one of these command lines after 'node liri.js': " + "\n" +
+							  "1. my-tweets 'any twitter name' " + "\n" +
+							  "2. spotify-this-song 'any song name' " + "\n" +
+							  "3. movie-this 'any movie title' " + "\n" +
+							  "4. do-what-it-says" + "\n" +
+							  "Be sure to include all song names and movie titles in quotations if it is more than one word. ");
+	}
+}
+
+//-----------------------------------------------------------------------------------------
+//Do What It Says
+function doWhatItSays(){
+	fs.readFile("random.txt", "utf8", function(error, data) {
+
+  // If the code experiences any errors it will log the error to the console.
+  if (!error) {
+    var doWhatItSaysResults = data.split(",");
+    console.log("Reading File..... ");
+    console.log(doWhatItSaysResults);
+
+   //command = doWhatItSaysResults[0];
+   //arg = doWhatItSaysResults[1];
+
+  	doCommand(doWhatItSaysResults[0], doWhatItSaysResults[1]);
+  	///console.log(data);
+  	
+  } else{ 
+  		console.log("An Error has Occured! " + error);
+  		return;
+  }
+  //console.log(dataArr);
+
+});
+console.log("Do What It Says!!");
+}
+
+doCommand(process.argv[2], process.argv[3]);
 
 //-----------------------------------------------------------------------------------------------------------------------------------
 //Twitter
@@ -119,65 +178,6 @@ console.log("Movie This!!");
 
 }
 
-//-------------------------------------------------------------------------------------------------------------------------------------
-//Do what it says
-
-
-function doCommand(command, arg) {
-    switch(command){
-
-	case "my-tweets":
-	myTweets(arg);
-	break;
-
-	case "spotify-this-song":
-	spotifyThisSong(arg);
-	break;
-
-	case "movie-this":
-	movieThis(arg);
-	break;
-
-	case "do-what-it-says":
-	doWhatItSays();
-	break;
-
-	default: console.log("\nType any one of these command lines after 'node liri.js': " + "\n" +
-							  "1. my-tweets 'any twitter name' " + "\n" +
-							  "2. spotify-this-song 'any song name' " + "\n" +
-							  "3. movie-this 'any movie title' " + "\n" +
-							  "4. do-what-it-says" + "\n" +
-							  "Be sure to include all song names and movie titles in quotations if it is more than one word. ");
-	}
-}
-
-
-function doWhatItSays(){
-	fs.readFile("random.txt", "utf8", function(error, data) {
-
-  // If the code experiences any errors it will log the error to the console.
-  if (!error) {
-    var doWhatItSaysResults = data.split(",");
-    console.log("Reading File..... ");
-    console.log(doWhatItSaysResults);
-
-   //command = doWhatItSaysResults[0];
-   //arg = doWhatItSaysResults[1];
-
-  	doCommand(doWhatItSaysResults[0], doWhatItSaysResults[1]);
-  	///console.log(data);
-  	
-  } else{ 
-  		console.log("An Error has Occured! " + error);
-  		return;
-  }
-  //console.log(dataArr);
-
-});
-console.log("Do What It Says!!");
-}
-
-doCommand(process.argv[2], process.argv[3]);
 
 
 
