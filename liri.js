@@ -9,38 +9,14 @@ require("dotenv").config();
 	var liriArgument = process.argv[2];
 //---------------------------------------------------------------------------------------------
 //Commands for Liri App
-switch(liriArgument){
 
-	case "my-tweets":
-	myTweets();
-	break;
-
-	case "spotify-this-song":
-	spotifyThisSong();
-	break;
-
-	case "movie-this":
-	movieThis();
-	break;
-
-	case "do-what-it-says":
-	doWhatItSays();
-	break;
-
-	default: console.log("\nType any one of these command lines after 'node liri.js': " + "\n" +
-							  "1. my-tweets 'any twitter name' " + "\n" +
-							  "2. spotify-this-song 'any song name' " + "\n" +
-							  "3. movie-this 'any movie title' " + "\n" +
-							  "4. do-what-it-says" + "\n" +
-							  "Be sure to include all song names and movie titles in quotations if it is more than one word. ");
-	}
 //-----------------------------------------------------------------------------------------------------------------------------------
 //Twitter
-function myTweets() {
+function myTweets(arg) {
 	// Variable that holds Twitter access keys
 	var client = new twitter(keys.twitter);
 	//variable that holds argument
-	var twitterUsername = process.argv[3];
+	var twitterUsername = arg;
 
 	if(!twitterUsername){
 		twitterUsername = "JescottJoey";
@@ -56,7 +32,7 @@ client.get('statuses/user_timeline', params, function(error, tweets, response) {
   		var twitterResults = 
   		"\n@" + tweets[i].user.screen_name + "\n" +
   		"\nDate Tweeted: " + tweets[i]. created_at + "\n" +
-  		"\nTweet: " + tweets[i].text + "\n" 
+  		"\nTweet: " + tweets[i].text + "\n" + "\n----------------------------------------------------\n"
   		
   		console.log(twitterResults);
   	}
@@ -71,11 +47,11 @@ console.log("My Tweets!!")
 
 //-------------------------------------------------------------------------------------------------------------------------------
 //Spotify
-function spotifyThisSong() {
+function spotifyThisSong(arg) {
 	//variablbe that holds spotify access keys 
 	var userKeys = new spotify(keys.spotify);
 	//variable that holds argument
-	var songName = process.argv[3];
+	var songName = arg;
 
 	if(!songName){
 		songName = "User should input a song!";
@@ -107,9 +83,9 @@ console.log("Spotify This Song!!");
 
 //--------------------------------------------------------------------------------------------------------------------
 //Movie
-function movieThis() {
+function movieThis(arg) {
 //variable that holds movie argument
-var movieName = process.argv[3];
+var movieName = arg;
 if(!movieName){
 	movieName = "Mr. Nobody";
 	console.log("Default Movie: " + movieName);
@@ -148,16 +124,31 @@ console.log("Movie This!!");
 
 
 function doCommand(command, arg) {
-    switch (liriArgument) {
+    switch(command){
+
+	case "my-tweets":
+	myTweets(arg);
+	break;
+
+	case "spotify-this-song":
+	spotifyThisSong(arg);
+	break;
+
+	case "movie-this":
+	movieThis(arg);
+	break;
 
 	case "do-what-it-says":
 	doWhatItSays();
 	break;
 
-	case "spotify-this-song":
-	spotifyThisSong();
-	break;
-    }
+	default: console.log("\nType any one of these command lines after 'node liri.js': " + "\n" +
+							  "1. my-tweets 'any twitter name' " + "\n" +
+							  "2. spotify-this-song 'any song name' " + "\n" +
+							  "3. movie-this 'any movie title' " + "\n" +
+							  "4. do-what-it-says" + "\n" +
+							  "Be sure to include all song names and movie titles in quotations if it is more than one word. ");
+	}
 }
 
 
@@ -168,9 +159,13 @@ function doWhatItSays(){
   if (!error) {
     var doWhatItSaysResults = data.split(",");
     console.log("Reading File..... ");
+    console.log(doWhatItSaysResults);
 
-  	doCommand(doWhatItSaysResults[0] + doWhatItSaysResults[1]);
-  	console.log(data);
+   //command = doWhatItSaysResults[0];
+   //arg = doWhatItSaysResults[1];
+
+  	doCommand(doWhatItSaysResults[0], doWhatItSaysResults[1]);
+  	///console.log(data);
   	
   } else{ 
   		console.log("An Error has Occured! " + error);
@@ -182,7 +177,7 @@ function doWhatItSays(){
 console.log("Do What It Says!!");
 }
 
-doCommand(liriArgument, process.argv[3])
-	//console.log(songInfo);
+doCommand(process.argv[2], process.argv[3]);
+
 
 
